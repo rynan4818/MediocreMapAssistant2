@@ -1,7 +1,10 @@
-# Fork of a fork of a 3D beatsaber song editor
-![alt text](https://i.imgur.com/zimA0I6.png)
-This is a "fork" of [EditSaberEnhanced by permissionBRICK](https://github.com/permissionBRICK/EditSaberEnhanced) which is a "fork" of  [EditSaber by Ikeiwa](https://github.com/Ikeiwa/EditSaber). Previously assisting with EditSaberEnhanced, I made this mediocre thing as a set of feature additions on EditSaberEnanced.
+# Fork of a fork of a fork of a 3D beatsaber song editor
+![alt text](https://i.imgur.com/87zY9Te.png)
+This is a "fork" of [MediocreMapper by squeaksies](https://github.com/squeaksies/MediocreMapper) which is a "fork" of [EditSaberEnhanced by permissionBRICK](https://github.com/permissionBRICK/EditSaberEnhanced) which is a "fork" of  [EditSaber by Ikeiwa](https://github.com/Ikeiwa/EditSaber). Previously assisting with EditSaberEnhanced, I made this mediocre thing as a set of feature additions on EditSaberEnanced.
 
+## Supports the new BeatSaver schema
+
+# MediocreMapper changelog
 ## No longer maintained
  
 ## Update Mk4
