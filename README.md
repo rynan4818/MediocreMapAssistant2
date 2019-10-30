@@ -3,6 +3,7 @@
 This is a "fork" of [MediocreMapper by squeaksies](https://github.com/squeaksies/MediocreMapper) which is a "fork" of [EditSaberEnhanced by permissionBRICK](https://github.com/permissionBRICK/EditSaberEnhanced) which is a "fork" of  [EditSaber by Ikeiwa](https://github.com/Ikeiwa/EditSaber). Previously assisting with EditSaberEnhanced, I made this mediocre thing as a set of feature additions on EditSaberEnanced.
 
 ## Supports the new BeatSaver schema
+If you find any bugs please complain to `williums#0001`, this is all their fault. 
 
 # MediocreMapper changelog
 ## No longer maintained
