@@ -190,3 +190,6 @@ Min Time and Max Time specifies time of effect from a note.
 * Timing Track
 * Lightmap Integration
 * Bookmarks for collaborations 
+
+## Developer setup
+There is a [short tutorial](DeveloperSetup.md) for setting up your [development environment](DeveloperSetup.md) if you want to contribute to the mapping assistant.
