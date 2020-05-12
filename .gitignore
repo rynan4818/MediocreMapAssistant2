@@ -60,7 +60,7 @@ Build/*/**
 !Build/*/PakBlacklist*.txt
 
 # Don't ignore icon files in Build
-!Build/**/*.ico
+#!Build/**/*.ico
 
 # Built data for maps
 *_BuiltData.uasset
@@ -85,3 +85,5 @@ DerivedDataCache/*
 !Plugins/ZipUtility-ue4/ThirdParty/*/**
 !Plugins/discordrpc/Source/ThirdParty/*/*/**
 !Plugins/discordrpc/SourceThirdParty/*/**
+
+WindowsNoEditor
