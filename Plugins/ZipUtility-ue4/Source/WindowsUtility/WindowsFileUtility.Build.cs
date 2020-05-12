@@ -9,14 +9,16 @@ public class WindowsFileUtility : ModuleRules
     {
         PublicIncludePaths.AddRange(
             new string[] {
-                "WindowsFileUtility/Public"
+                "WindowsFileUtility/Public/Mac",
+                "WindowsFileUtility/Public/Win64"
 				// ... add public include paths required here ...
 			}
             );
 
         PrivateIncludePaths.AddRange(
             new string[] {
-                "WindowsFileUtility/Private",
+                "WindowsFileUtility/Private/Mac",
+                "WindowsFileUtility/Private/Win64"
 				// ... add other private include paths required here ...
 			}
             );

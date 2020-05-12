@@ -3,7 +3,7 @@
 #include "Updater.h"
 #include "FileManagerGeneric.h"
 #include "Paths.h"
-#include <windows.h>
+//#include <windows.h>
 
 bool UUpdater::updateUpdater()
 {

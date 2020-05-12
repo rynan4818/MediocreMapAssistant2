@@ -87,3 +87,4 @@ DerivedDataCache/*
 !Plugins/discordrpc/SourceThirdParty/*/**
 
 WindowsNoEditor
+.DS_Store
