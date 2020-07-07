@@ -7,11 +7,11 @@
 
 bool UUpdater::updateUpdater()
 {
-	FString source = FPaths::GameDir()+"Updates/MediocreMapper/MediocreUpdater.exe"; 
-	FString target = FPaths::GameDir() +"MediocreUpdater.exe";
+	FString source = FPaths::ProjectDir()+"Updates/MediocreMapper/MediocreUpdater.exe";
+	FString target = FPaths::ProjectDir() +"MediocreUpdater.exe";
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *source);
-	if (FPlatformFileManager::Get().GetPlatformFile().FileExists(*source)) 
-	{ 
+	if (FPlatformFileManager::Get().GetPlatformFile().FileExists(*source))
+	{
 		IFileManager& fManager = FFileManagerGeneric::Get();
 		fManager.Copy(*source,*target,true,true);
 		return FPlatformFileManager::Get().GetPlatformFile().FileExists(*target);
@@ -19,4 +19,14 @@ bool UUpdater::updateUpdater()
 	return false;
 }
 
-
+FString UUpdater::getProjectVersion()
+{
+	FString ProjectVersion;
+	GConfig->GetString(
+		TEXT("/Script/EngineSettings.GeneralProjectSettings"),
+		TEXT("ProjectVersion"), 
+		ProjectVersion,
+		GGameIni
+	);
+	return ProjectVersion;
+}
