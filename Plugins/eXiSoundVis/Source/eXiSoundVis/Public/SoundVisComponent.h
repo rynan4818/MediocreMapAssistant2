@@ -134,14 +134,14 @@ public:
 	/// Functions to load Data from the HardDrive
 
 	// Function to load a sound file from the HD
-	void LoadSoundFileFromHD(const FString& InFilePath);
+	bool LoadSoundFileFromHD(const FString& InFilePath);
 
 	// Function to fill in the RawFile sound data into the USoundWave object
 	bool FillSoundWaveInfo(class USoundWave* InSoundWave, TArray<uint8>* InRawFile);
 
 	/// Function to decompress the compressed Data that comes with the .ogg file
 
-	void GetPCMDataFromFile(class USoundWave* InSoundWave);
+	bool GetPCMDataFromFile(class USoundWave* InSoundWave);
 
 	/// Function to calculate the frequency spectrum
 
@@ -158,6 +158,8 @@ public:
 	// DEBUG Test function to check if Task can call stuff in here
 	void Notify_SoundDecompressed();
 
+	void Notify_FailedToDecompress();
+
 	// Function that is looped to handle the calculation of the FrequencySpectrum
 	UFUNCTION()
 		void HandleFrequencySpectrumCalculation();
@@ -171,7 +173,7 @@ public:
 	*
 	*/
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Load Sound File"), Category = "SoundVis | SoundFile")
-		void BP_LoadSoundFileFromHD(const FString InFilePath);
+		bool BP_LoadSoundFileFromHD(const FString InFilePath);
 
 	/**
 	* Will get an Array of Names of the Found SoundFiles

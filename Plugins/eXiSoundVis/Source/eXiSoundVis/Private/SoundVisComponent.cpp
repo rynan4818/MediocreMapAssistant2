@@ -41,7 +41,7 @@ void USoundVisComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 /// Functions to load Data from the HardDrive
 
-void USoundVisComponent::LoadSoundFileFromHD(const FString& InFilePath)
+bool USoundVisComponent::LoadSoundFileFromHD(const FString& InFilePath)
 {
 	// Create new SoundWave Object
 	CompressedSoundWaveRef = NewObject<USoundWave>(USoundWave::StaticClass());
@@ -50,7 +50,7 @@ void USoundVisComponent::LoadSoundFileFromHD(const FString& InFilePath)
 	if (!CompressedSoundWaveRef) {
 
 		PrintError(TEXT("Failed to create new SoundWave Object!"));
-		return;
+		return false;
 	}
 
 	// If true, the Sound was successfully loaded
@@ -64,6 +64,7 @@ void USoundVisComponent::LoadSoundFileFromHD(const FString& InFilePath)
 
 	if (bLoaded)
 	{
+		UE_LOG(LogTemp, Error, TEXT("LoadSoundFileFromHD 0"));
 		// Fill the SoundData into the SoundWave Object
 		if (RawFile.Num() > 0) {
 
@@ -92,11 +93,11 @@ void USoundVisComponent::LoadSoundFileFromHD(const FString& InFilePath)
 	if (!bLoaded) {
 
 		PrintError(TEXT("Something went wrong while loading the Sound Data!"));
-		return;
+		return false;
 	}
 
 	// Fill the PCMSampleBuffer
-	GetPCMDataFromFile(CompressedSoundWaveRef);
+	return GetPCMDataFromFile(CompressedSoundWaveRef);
 }
 
 bool USoundVisComponent::FillSoundWaveInfo(USoundWave* InSoundWave, TArray<uint8>* InRawFile)
@@ -124,18 +125,18 @@ bool USoundVisComponent::FillSoundWaveInfo(USoundWave* InSoundWave, TArray<uint8
 
 /// Function to decompress the compressed Data that comes with the .ogg file
 
-void USoundVisComponent::GetPCMDataFromFile(USoundWave* InSoundWave)
+bool USoundVisComponent::GetPCMDataFromFile(USoundWave* InSoundWave)
 {
 	if (InSoundWave == nullptr)	{
 		
 		PrintError(TEXT("Passed SoundWave pointer is a nullptr!"));
-		return;
+		return false;
 	}
 
 	if (InSoundWave->NumChannels < 1 || InSoundWave->NumChannels > 2) {
 		
 		PrintError(TEXT("SoundWave Object has not the right amount of Channels. Plugin only supports 1 or 2!"));
-		return;
+		return false;
 	}
 
 	if (GEngine)
@@ -151,13 +152,14 @@ void USoundVisComponent::GetPCMDataFromFile(USoundWave* InSoundWave)
 				
 			// Creates a new DecompressWorker and starts it
 			InitNewDecompressTask(InSoundWave);
+			return true;
 		}
 		else {
 
 			PrintError(TEXT("Couldn't get a valid Pointer to the Main AudioDevice!"));
-			return;
 		}
 	}
+	return false;
 }
 
 void USoundVisComponent::CalculateFrequencySpectrum(USoundWave* InSoundWaveRef, const float InStartTime, const float InDuration, TArray<float>& OutFrequencies)
@@ -399,9 +401,9 @@ void USoundVisComponent::HandleFrequencySpectrumCalculation()
 
 /// Blueprint Versions of the File Data Functions
 
-void USoundVisComponent::BP_LoadSoundFileFromHD(const FString InFilePath)
+bool USoundVisComponent::BP_LoadSoundFileFromHD(const FString InFilePath)
 {
-	LoadSoundFileFromHD(InFilePath);
+	return LoadSoundFileFromHD(InFilePath);
 }
 
 void USoundVisComponent::BP_LoadAllSoundFileNamesFromHD(bool& bLoaded, const FString InDirectoryPath, const bool bInAbsolutePath, const FString InFileExtension, TArray<FString>& OutSoundFileNamesWithPath, TArray<FString>& OutSoundFileNamesWithoutPath)
