@@ -2,6 +2,13 @@
 
 #include "BPFileIO.h"
 
+#include "ModuleManager.h"
+#include "FileHelper.h"
+
+#include "ImageUtils.h"
+#include "IImageWrapper.h"
+#include "IImageWrapperModule.h"
+
 bool UBPFileIO::VerifyOrCreateDirectory(const FString & TestDir)
 {
 	IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
@@ -29,6 +36,57 @@ bool UBPFileIO::VerifyDirectory(const FString & TestDir)
 		return false;
 	}
 	return true;
+}
+
+FString UBPFileIO::CheckImageFormatMatches(const FString & TestPath)
+{
+	FString unknownProblem = "Something's weird with your cover image, and i don't know what it is.";
+	IImageWrapperModule& ImageWrapperModule = FModuleManager::LoadModuleChecked<IImageWrapperModule>(FName("ImageWrapper"));
+
+	TArray<uint8> FileData;
+	if (!FFileHelper::LoadFileToArray(FileData, *TestPath))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to load file"));
+		return unknownProblem;
+	}
+
+	EImageFormat fileFormat = ImageWrapperModule.DetectImageFormat(FileData.GetData(), FileData.Num());
+
+	if ((TestPath.EndsWith(".png") && fileFormat == EImageFormat::PNG) ||
+		((TestPath.EndsWith(".jpg") || TestPath.EndsWith(".jpeg")) && (fileFormat == EImageFormat::JPEG || fileFormat == EImageFormat::GrayscaleJPEG)))
+	{
+		return unknownProblem;
+	} else if (!TestPath.EndsWith(".png") && !TestPath.EndsWith(".jpg") && !TestPath.EndsWith(".jpeg")) {
+		return "Your cover image needs to be a jpg or png and end with .jpg, .jpeg or .png";
+	}
+
+	FString fileFormatStr;
+	switch (fileFormat) {
+		case EImageFormat::BMP:
+			fileFormatStr = "BMP";
+			break;
+		case EImageFormat::PNG:
+			fileFormatStr = "PNG";
+			break;
+		case EImageFormat::JPEG:
+		case EImageFormat::GrayscaleJPEG:
+			fileFormatStr = "JPG";
+			break;
+		case EImageFormat::ICO:
+			fileFormatStr = "ICO";
+			break;
+		case EImageFormat::EXR:
+			fileFormatStr = "EXR";
+			break;
+		case EImageFormat::ICNS:
+			fileFormatStr = "ICNS";
+			break;
+		case EImageFormat::Invalid:
+		default:
+			fileFormatStr = "Unknown";
+	}
+
+	return "Your cover image appears to be a " + fileFormatStr + " file, but the extension does not match";
 }
 
 TArray<FString> UBPFileIO::FindAllDirectories(const FString & TestDir)
