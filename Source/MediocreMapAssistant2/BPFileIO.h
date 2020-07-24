@@ -24,6 +24,9 @@ class MEDIOCREMAPASSISTANT2_API UBPFileIO : public UBlueprintFunctionLibrary
 		static bool VerifyDirectory(const FString& TestDir);
 
 	UFUNCTION(BlueprintCallable, Category = "File IO")
+		static FString CheckAudioFormatMatches(const FString& TestPath);
+
+	UFUNCTION(BlueprintCallable, Category = "File IO")
 		static FString CheckImageFormatMatches(const FString& TestPath);
 
 	UFUNCTION(BlueprintCallable, Category = "File IO")
