@@ -181,7 +181,10 @@ FString UBPFileIO::CheckAudioFormatMatches(const FString & TestPath)
 	for (int i = 0; i < 1024; i++) {
 		if ((FileData[i] << 8 | (FileData[i+1] & 0xF0)) == 0xFFF0) {
 			if (CheckFrameInfo(FileData, i, 0) != -1) {
-				return "That looks like an MP3, you can't just rename files to change their type.\nGo get audacity and convert it properly.";
+				if (TestPath.EndsWith(".ogg")) {
+					return "That looks like an MP3, you can't just rename files to change their type.\nGo get audacity and convert it properly.";
+				}
+				return "That looks like an MP3, but it needs to be an ogg.\nPlease use audacity to convert it.";
 			}
 
 			return unknownProblem;
