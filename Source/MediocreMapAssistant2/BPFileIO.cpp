@@ -178,6 +178,10 @@ FString UBPFileIO::CheckAudioFormatMatches(const FString & TestPath)
 		return unknownProblem;
 	}
 
+	if (FileData.Num() < 1024) {
+		return unknownProblem;
+	}
+
 	for (int i = 0; i < 1024; i++) {
 		if ((FileData[i] << 8 | (FileData[i+1] & 0xF0)) == 0xFFF0) {
 			if (CheckFrameInfo(FileData, i, 0) != -1) {
