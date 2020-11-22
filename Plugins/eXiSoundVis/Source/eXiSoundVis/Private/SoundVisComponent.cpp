@@ -351,8 +351,12 @@ void USoundVisComponent::Notify_SoundDecompressed()
 		// ..clear the timer and..
 		GetWorld()->GetTimerManager().ClearTimer(AudioDecompressTimer);
 
-		//..broadcast the result to the Blueprint
-		OnFileLoadCompleted.Broadcast(FAudioDecompressWorker::Runnable->GetSoundWaveRef());
+		try {
+			//..broadcast the result to the Blueprint
+			OnFileLoadCompleted.Broadcast(FAudioDecompressWorker::Runnable->GetSoundWaveRef());
+		} catch (const std::exception&) {
+			// Yo, bad things happened
+		}
 
 		PrintLog(TEXT("Worker finished!"));
 	}

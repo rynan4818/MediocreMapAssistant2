@@ -67,37 +67,41 @@ uint32 FAudioDecompressWorker::Run()
 
 	if (AudioInfo != NULL)
 	{
-		FSoundQualityInfo QualityInfo = { 0 };
+		try {
+			FSoundQualityInfo QualityInfo = { 0 };
 
-		// Parse the audio header for the relevant information
-		if (!(SoundWaveRef->ResourceData))
-		{
-			return 0;
-		}
-
-		if (AudioInfo->ReadCompressedInfo(SoundWaveRef->ResourceData, SoundWaveRef->ResourceSize, &QualityInfo))
-		{
-			FScopeCycleCounterUObject WaveObject(SoundWaveRef);
-
-			// Extract the data
-			SoundWaveRef->SampleRate = QualityInfo.SampleRate;
-			SoundWaveRef->NumChannels = QualityInfo.NumChannels;
-
-			if (QualityInfo.Duration > 0.0f)
+			// Parse the audio header for the relevant information
+			if (!(SoundWaveRef->ResourceData))
 			{
-				SoundWaveRef->Duration = QualityInfo.Duration;
+				return 0;
 			}
 
-			const uint32 PCMBufferSize = SoundWaveRef->Duration * SoundWaveRef->SampleRate * SoundWaveRef->NumChannels;
+			if (AudioInfo->ReadCompressedInfo(SoundWaveRef->ResourceData, SoundWaveRef->ResourceSize, &QualityInfo))
+			{
+				FScopeCycleCounterUObject WaveObject(SoundWaveRef);
 
-			SoundWaveRef->CachedRealtimeFirstBuffer = new uint8[PCMBufferSize * 2];
+				// Extract the data
+				SoundWaveRef->SampleRate = QualityInfo.SampleRate;
+				SoundWaveRef->NumChannels = QualityInfo.NumChannels;
 
-			AudioInfo->SeekToTime(0.0f);
-			AudioInfo->ReadCompressedData(SoundWaveRef->CachedRealtimeFirstBuffer, false, PCMBufferSize * 2);
-		}
-		else if (SoundWaveRef->DecompressionType == DTYPE_RealTime || SoundWaveRef->DecompressionType == DTYPE_Native)
-		{
-			SoundWaveRef->RemoveAudioResource();
+				if (QualityInfo.Duration > 0.0f)
+				{
+					SoundWaveRef->Duration = QualityInfo.Duration;
+				}
+
+				const uint32 PCMBufferSize = SoundWaveRef->Duration * SoundWaveRef->SampleRate * SoundWaveRef->NumChannels;
+
+				SoundWaveRef->CachedRealtimeFirstBuffer = new uint8[PCMBufferSize * 2];
+
+				AudioInfo->SeekToTime(0.0f);
+				AudioInfo->ReadCompressedData(SoundWaveRef->CachedRealtimeFirstBuffer, false, PCMBufferSize * 2);
+			}
+			else if (SoundWaveRef->DecompressionType == DTYPE_RealTime || SoundWaveRef->DecompressionType == DTYPE_Native)
+			{
+				SoundWaveRef->RemoveAudioResource();
+			}
+		} catch (const std::exception&) {
+			// Yo, bad things happened
 		}
 
 		delete AudioInfo;
