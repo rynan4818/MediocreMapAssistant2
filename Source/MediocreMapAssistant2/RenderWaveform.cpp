@@ -220,7 +220,7 @@ void URenderWaveform::BP_RenderWaveform(USoundWave* InSoundWaveRef, UProceduralM
 		for (size_t j = 0; j < 64; ++j){
 			float height;
 
-			if (valid) height = results[j * 8.f] / 50000.f;
+			if (valid && results.Num() > (j * 8.f)) height = results[j * 8.f] / 50000.f;
 			else height = 0;
 
 			Vertices[To1D(i, j, SizeX)] = FVector(i, j, height);
