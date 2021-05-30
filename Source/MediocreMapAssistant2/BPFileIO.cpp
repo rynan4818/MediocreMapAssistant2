@@ -337,3 +337,34 @@ int UBPFileIO::getTimestamp(const FString & File)
 {
 	return FPlatformFileManager::Get().GetPlatformFile().GetTimeStamp(*File).ToUnixTimestamp();
 }
+
+bool UBPFileIO::SaveStringTextToFile(
+	FString SaveDirectory,
+	FString JoyfulFileName,
+	FString SaveText,
+	bool AllowOverWriting
+) {
+	if (!FPlatformFileManager::Get().GetPlatformFile().CreateDirectoryTree(*SaveDirectory))
+	{
+		//Could not make the specified directory
+		return false;
+		//~~~~~~~~~~~~~~~~~~~~~~
+	}
+
+	//get complete file path
+	SaveDirectory += "\\";
+	SaveDirectory += JoyfulFileName;
+
+	//No over-writing?
+	if (!AllowOverWriting)
+	{
+		//Check if file exists already
+		if (FPlatformFileManager::Get().GetPlatformFile().FileExists(*SaveDirectory))
+		{
+			//no overwriting
+			return false;
+		}
+	}
+
+	return FFileHelper::SaveStringToFile(SaveText, *SaveDirectory, FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
+}

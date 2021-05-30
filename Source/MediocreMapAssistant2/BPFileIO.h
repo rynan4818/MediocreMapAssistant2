@@ -55,5 +55,11 @@ class MEDIOCREMAPASSISTANT2_API UBPFileIO : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable, Category = "File IO")
 		static int getTimestamp(const FString& File);
-	
+
+	UFUNCTION(BlueprintCallable, Category = "File IO")
+		static bool SaveStringTextToFile(
+			FString SaveDirectory,
+			FString JoyfulFileName,
+			FString SaveText,
+			bool AllowOverWriting);
 };
